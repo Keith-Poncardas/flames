@@ -1,0 +1,103 @@
+ <?php
+        // Function to calculate Zodiac sign based on the birthdate
+        function getZodiacSign($date)
+        {
+            $month = date('m', strtotime($date));
+            $day = date('d', strtotime($date));
+
+            // Zodiac sign calculation logic
+            if (($month == 3 && $day >= 21) || ($month == 4 && $day <= 19)) {
+                return 'Aries';
+            } elseif (($month == 4 && $day >= 20) || ($month == 5 && $day <= 20)) {
+                return 'Taurus';
+            } elseif (($month == 5 && $day >= 21) || ($month == 6 && $day <= 20)) {
+                return 'Gemini';
+            } elseif (($month == 6 && $day >= 21) || ($month == 7 && $day <= 22)) {
+                return 'Cancer';
+            } elseif (($month == 7 && $day >= 23) || ($month == 8 && $day <= 22)) {
+                return 'Leo';
+            } elseif (($month == 8 && $day >= 23) || ($month == 9 && $day <= 22)) {
+                return 'Virgo';
+            } elseif (($month == 9 && $day >= 23) || ($month == 10 && $day <= 22)) {
+                return 'Libra';
+            } elseif (($month == 10 && $day >= 23) || ($month == 11 && $day <= 21)) {
+                return 'Scorpio';
+            } elseif (($month == 11 && $day >= 22) || ($month == 12 && $day <= 21)) {
+                return 'Sagittarius';
+            } elseif (($month == 12 && $day >= 22) || ($month == 1 && $day <= 19)) {
+                return 'Capricorn';
+            } elseif (($month == 1 && $day >= 20) || ($month == 2 && $day <= 18)) {
+                return 'Aquarius';
+            } else {
+                return 'Pisces';
+            }
+        }
+
+       // Calculate Zodiac signs
+$zodiac_sign_your = isset($_GET['birthday1']) ? getZodiacSign($_GET['birthday1']) : '';
+$zodiac_sign_crush = isset($_GET['birthday2']) ? getZodiacSign($_GET['birthday2']) : '';
+
+// Initialize $result and $common_letters
+$result = '';
+$common_letters = '';
+
+    if (isset($_GET['submit-btn'])) 
+        $your_name = isset($_GET['your_name']) ? ucfirst(strtolower(trim($_GET['your_name']))) : '';
+        $crush_name = isset($_GET['crush_name']) ? ucfirst(strtolower(trim($_GET['crush_name']))) : '';
+
+        // Check if 'birthday1' and 'birthday2' are set before using them
+        $birthday1 = isset($_GET['birthday1']) ? $_GET['birthday1'] : '';
+        $birthday2 = isset($_GET['birthday2']) ? $_GET['birthday2'] : '';
+        
+            if (isset($_GET['submit-btn'])) {
+                $your_name = ucfirst(strtolower(trim($_GET['your_name'])));
+                $crush_name = ucfirst(strtolower(trim($_GET['crush_name'])));
+            
+                // Count the total number of similar letters
+                $total_count = 0;
+                for ($i = 0; $i < strlen($your_name); $i++) {
+                if (strpos($crush_name, $your_name[$i]) !== false) {
+                    $total_count++;
+                }
+                }
+                for ($i = 0; $i < strlen($crush_name); $i++) {
+                if (strpos($your_name, $crush_name[$i]) !== false) {
+                    $total_count++;
+                }
+                }
+        
+            // Calculate FLAMES result based on remainder
+            $remainder = $total_count % 6;
+            if ($remainder === 0) {
+                $result = "Soulmates";
+            } elseif ($remainder === 1) {
+                $result = "Friends";
+            } elseif ($remainder === 2) {
+                $result = "Lovers";
+            } elseif ($remainder === 3) {
+                $result = "Anger";
+            } elseif ($remainder === 4) {
+                $result = "Married";
+            } elseif ($remainder === 5) {
+                $result = "Engaged";
+            } else {
+                $result = "Incompatible";
+            }
+
+        echo "
+        <br>
+        <div class='grid-container result'>
+                <div class='grid-y'>
+                <div class='medium-6 cell'>";
+
+        if ($your_name !== '' && $crush_name !== '') {
+            echo "<h3>Results:</h3>";
+            echo "<h3>$your_name is a <u>$zodiac_sign_your</u> while $crush_name is a <u>$zodiac_sign_crush</u>.<br>This means their relationship compatibility is <u>$result</u>.</h3>";
+        } else {
+            echo "<p>Please complete the names!</p>";
+        }
+    }
+    echo "    </div>
+            </div>
+        </div>";
+    ?>
